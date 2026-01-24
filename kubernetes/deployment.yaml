@@ -17,8 +17,6 @@ spec:
     spec:
       containers:
       - name: springboot-container
-        image: docker.io/reda-sobhy/flask-app:1.0
+        image: docker.io/reda-sobhy/java-app:v1.0
         ports:
         - containerPort: 8080
-      imagePullSecrets:
-      - name: my-dockerhub-secret
