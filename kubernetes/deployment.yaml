@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: docker.io/reda-sobhy/java-app:v1.0
+        image: nginx
         ports:
         - containerPort: 8080
