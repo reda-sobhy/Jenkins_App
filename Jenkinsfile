@@ -4,7 +4,6 @@ pipeline {
     tools {
         jdk 'jdk'
         maven 'maven'
-        
     }
 
     stages {
@@ -13,5 +12,5 @@ pipeline {
                 sh 'mvn clean verify'
             }
         }
-
     }
+}
