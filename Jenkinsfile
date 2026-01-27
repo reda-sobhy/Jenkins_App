@@ -1,16 +1,34 @@
 pipeline {
     agent any
+
     stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean verify'
+            }
+        }
+
         stage('SonarQube Analysis') {
             steps {
-               
-                    
-                
-                    withSonarQubeEnv('sonarqube') {
-                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=my-project"
-                    }
-            
+                withSonarQubeEnv('sonarqube') {
+                    sh 'mvn sonar:sonar -Dsonar.projectKey=my-project'
+                }
             }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                waitForQualityGate abortPipeline: true
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Build and SonarQube Analysis succeeded ✅"
+        }
+        failure {
+            echo "Pipeline failed ❌"
         }
     }
 }
