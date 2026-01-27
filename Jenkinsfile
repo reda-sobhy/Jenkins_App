@@ -1,8 +1,8 @@
 pipeline {
     agent any
+
     tools {
-        maven 'maven'
-        
+        maven 'maven'  
         
     }
 
@@ -16,7 +16,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonarqube') {
-                    sh 'mvn sonar:sonar -Dsonar.projectKey=my-project'
+                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey= -Dsonar.sources=src"
                 }
             }
         }
@@ -25,15 +25,6 @@ pipeline {
             steps {
                 waitForQualityGate abortPipeline: true
             }
-        }
-    }
-
-    post {
-        success {
-            echo "Build and SonarQube Analysis succeeded ✅"
-        }
-        failure {
-            echo "Pipeline failed ❌"
         }
     }
 }
