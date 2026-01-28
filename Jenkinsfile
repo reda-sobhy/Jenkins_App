@@ -9,7 +9,6 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                // نعمل clone للمستودع من GitHub
                 git url: 'https://github.com/reda-sobhy/Jenkins_App.git', branch: 'main'
             }
         }
@@ -22,8 +21,15 @@ pipeline {
 
         stage('OWASP Scan') {
             steps {
-                dependencyCheck additionalArguments: '--scan ./ --format XML --format HTML', odcInstallation: 'dp'
-                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                sh '''
+                    /opt/dependency-check/dependency-check/bin/dependency-check.sh \
+                    --project "JavaApp" \
+                    --scan ./ \
+                    --format XML \
+                    --format HTML \
+                    --out ./dependency-check-report
+                '''
+                dependencyCheckPublisher pattern: 'dependency-check-report/dependency-check-report.xml'
             }
         }
     }
